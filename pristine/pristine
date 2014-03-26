@@ -187,15 +187,15 @@ fi
 if [ "x"`echo $FLAGS | grep g` = "x"$FLAGS ]; then
   RUN_GIT_STATUS=TRUE
 fi
-if [ "x"`echo $FLAGS | grep u` = "x"$FLAGS ]; then
-  RUN_CC_UNTRACK=TRUE
-fi
+#if [ "x"`echo $FLAGS | grep u` = "x"$FLAGS ]; then
+#  RUN_CC_UNTRACK=TRUE
+#fi
 if [ "x"`echo $FLAGS | grep c` = "x"$FLAGS ]; then
   RUN_CC_CHECKOUTS=TRUE
 fi
-if [ "x"`echo $FLAGS | grep h` = "x"$FLAGS ]; then
-  RUN_CC_HIJACKS=TRUE
-fi
+#if [ "x"`echo $FLAGS | grep h` = "x"$FLAGS ]; then
+#  RUN_CC_HIJACKS=TRUE
+#fi
 
 
 ###################################################
@@ -364,7 +364,7 @@ fi
 echo -n Checking \(-c\) CC Checkouts...
 if [ $RUN_CC_CHECKOUTS = "TRUE" ]; then
 
-  cleartool lsco -me -recurse -short $FILE_LIST $DIR_LIST >\
+  rcleartool lsco -me -recurse -short $FILE_LIST $DIR_LIST >\
       $DIR/cc_checkout
 
   if [ `cat $DIR/cc_checkout | wc -l` != "0" ]; then
