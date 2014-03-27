@@ -25,8 +25,12 @@ use strict;
 
 # Optionally add path to these
 my $git = "git";
-my $ct = "/usr/atria/bin/cleartool";
+my $ct = "rcleartool";
 my $cp = "/bin/cp -vf";
+my $ccserver = "http://was-cc1-web/ccrc";
+my $ccuser = "corp\\jindwang";
+my $ccpwd = "Rico123#";
+my $cccredential = "-username $ccuser -server $ccserver -password $ccpwd";
 
 # path to repo (inside a clearcase view)
 my $clearcase_dir = `$git config --global --get gitclearcase.ccsource`;
@@ -38,7 +42,8 @@ my $repo_dir = `$git config --global --get gitclearcase.barerepo`;
 # Initialization #
 ##################
 
-my $ccview = $ENV{'CLEARCASE_ROOT'};
+#my $ccview = $ENV{'CLEARCASE_ROOT'};
+my $ccview = "/views/jinde_git_test";
 
 my @ignore_contents = (
 		"# Git ignore file",
@@ -136,7 +141,8 @@ sub ct_op {
 	$bname =~ s:^.*/::;
 	$cmt = "Updating $bname" unless(length($cmt));
 	$file = "$clearcase_dir/$file" unless($file =~ m/^\//);
-	die("Could not $op $file\n") if(system("$ct $op -c '$cmt' $file"));
+	#print "$ct $op $cccredential -c '$cmt' $file";
+	die("Could not $op $file\n") if(system("$ct $op $cccredential -c '$cmt' $file"));
 }
 
 sub checkout {
@@ -247,7 +253,9 @@ sub commitcc {
 
 	chdir $clearcase_dir;
 
-	my @clearcase_checkouts = `$ct lsco -short -cview -avobs`;
+	# rcleartool doesn't support -avobs.
+	#print "$ct lsco $$ct lsco $cccredential -short -cview";
+	my @clearcase_checkouts = `$ct lsco $cccredential -short -cview`;
 	die("Nothing to update from clearcase?\n") unless(scalar(@clearcase_checkouts));
 	chomp(@clearcase_checkouts);
 
